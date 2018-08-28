@@ -6,8 +6,19 @@
 
 
 <ion-content padding>
-  <h2>Team Detail</h2>
-  <p>{{team.name}}</p>
+  <!-- <h2>Team Detail</h2>
+  <p>{{team.name}}</p> -->
 
   <!-- <button ion-button (click)="goHome()">Go Home</button> -->
+
+    <ion-list >
+      <ion-item *ngFor="let g of games" (click)="gameClicked($event, g)">
+        {{ g.opponent }}
+      </ion-item>
+    </ion-list>
+
+
+
+
+
 </ion-content>
