@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class EliteApiProvider {
   private baseUrl = 'https://elite-schedule-app-715e6.firebaseio.com/';
-  private currentTourney = {};
+  private currentTourney: any;
 
   constructor(public http: Http) {
     console.log('Hello EliteApiProvider Provider');
@@ -41,5 +41,5 @@ export class EliteApiProvider {
   getCurrentTourney() {
     return this.currentTourney;
   }
-  
+
 }

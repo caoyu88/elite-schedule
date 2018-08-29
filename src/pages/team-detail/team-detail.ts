@@ -11,6 +11,7 @@ import { GamePage } from '../game/game';
 })
 export class TeamDetailPage {
   public team: any;
+  public teamStanding: any;
   public games: any[];
   public tourneyData: any;
 
@@ -18,31 +19,37 @@ export class TeamDetailPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public eliteApi: EliteApiProvider
-  ) {  }
-
-  ionViewDidLoad() {
+  ) {
     this.team = this.navParams.data;
-    this.tourneyData = this.eliteApi.getCurrentTourney();
-
     console.log('this.team - ', this.team);
 
+
+
+    this.tourneyData = this.eliteApi.getCurrentTourney();
+    console.log('this.tourneyData - ', this.tourneyData);
     this.games = _.chain(this.tourneyData.games)
-    .filter(g => g.team1Id === this.team.id || g.team2Id === this.team.id)
-    .map(g => {
-        let isTeam1 = (g.team1Id === this.team.id);
-        let opponentName = isTeam1 ? g.team2 : g.team1;
-        let scoreDisplay = this.getScoreDisplay(isTeam1, g.team1Score, g.team2Score);
-        return {
-            gameId: g.id,
-            opponent: opponentName,
-            time: Date.parse(g.time),
-            location: g.location,
-            locationUrl: g.locationUrl,
-            scoreDisplay: scoreDisplay,
-            homeAway: (isTeam1 ? "vs." : "at")
-        };
-    })
-    .value();
+                  .filter(g => g.team1Id === this.team.id || g.team2Id === this.team.id)
+                  .map(g => {
+                      let isTeam1 = (g.team1Id === this.team.id);
+                      let opponentName = isTeam1 ? g.team2 : g.team1;
+                      let scoreDisplay = this.getScoreDisplay(isTeam1, g.team1Score, g.team2Score);
+                      return {
+                          gameId: g.id,
+                          opponent: opponentName,
+                          time: Date.parse(g.time),
+                          location: g.location,
+                          locationUrl: g.locationUrl,
+                          scoreDisplay: scoreDisplay,
+                          homeAway: (isTeam1 ? "vs." : "at")
+                      };
+                  })
+                  .value();
+
+    this.teamStanding = _.find(this.tourneyData.standings, { 'teamId': this.team.id});
+    console.log('this.teamStanding - ', this.teamStanding);
+  }
+
+  ionViewDidLoad() {
   }
 
   getScoreDisplay(isTeam1, team1Score, team2Score) {

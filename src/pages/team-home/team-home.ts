@@ -11,7 +11,7 @@ import { TeamDetailPage } from '../team-detail/team-detail';
 export class TeamHomePage {
   public teamDetailTab = TeamDetailPage;
   public standingsTab = StandingsPage;
-  public team = {};
+  public team: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.team = navParams.data;
