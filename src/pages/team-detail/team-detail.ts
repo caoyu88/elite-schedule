@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import * as _ from 'lodash';
+import moment from 'moment';
 import { GamePage } from '../game/game';
 
 @Component({
@@ -10,10 +11,13 @@ import { GamePage } from '../game/game';
   templateUrl: 'team-detail.html',
 })
 export class TeamDetailPage {
+  private allGames: any[];
+  public dateFilter: string;
   public team: any;
   public teamStanding: any;
   public games: any[];
   public tourneyData: any;
+  public useDateFilter = false;
 
   constructor(
     public navCtrl: NavController,
@@ -44,12 +48,17 @@ export class TeamDetailPage {
                       };
                   })
                   .value();
+    this.allGames = this.games;
 
     this.teamStanding = _.find(this.tourneyData.standings, { 'teamId': this.team.id});
     console.log('this.teamStanding - ', this.teamStanding);
   }
 
   ionViewDidLoad() {
+  }
+
+  dateChanged() {
+    this.games = _.filter(this.allGames, g => moment(g.time).isSame(this.dateFilter, 'day'));
   }
 
   getScoreDisplay(isTeam1, team1Score, team2Score) {
