@@ -1,6 +1,6 @@
 import { EliteApiProvider } from './../../providers/elite-api/elite-api';
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 
 import * as _ from 'lodash';
 import moment from 'moment';
@@ -18,16 +18,17 @@ export class TeamDetailPage {
   public games: any[];
   public tourneyData: any;
   public useDateFilter = false;
+  public isFollowing = false;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public eliteApi: EliteApiProvider
+    public eliteApi: EliteApiProvider,
+    private alertController: AlertController,
+    private toastController: ToastController
   ) {
     this.team = this.navParams.data;
     console.log('this.team - ', this.team);
-
-
 
     this.tourneyData = this.eliteApi.getCurrentTourney();
     console.log('this.tourneyData - ', this.tourneyData);
@@ -58,7 +59,12 @@ export class TeamDetailPage {
   }
 
   dateChanged() {
-    this.games = _.filter(this.allGames, g => moment(g.time).isSame(this.dateFilter, 'day'));
+    if(this.useDateFilter) {
+      this.games = _.filter(this.allGames, g => moment(g.time).isSame(this.dateFilter, 'day'));
+    } else {
+      this.games = this.allGames;
+    }
+
   }
 
   getScoreDisplay(isTeam1, team1Score, team2Score) {
@@ -73,10 +79,50 @@ export class TeamDetailPage {
     }
   }
 
+  toggleFollowing() {
+    if(this.isFollowing) {
+      let confirm = this.alertController.create({
+        title: 'Unfollow',
+        message: 'Are you sure you want to unfollow?',
+        buttons: [
+          {
+            text: 'Yes',
+            handler: () => {
+              this.isFollowing = false;
+              // TODO - persiste data
+
+              let toast = this.toastController.create({
+                message: 'You have unfollowed this team.',
+                duration: 2500,
+                position: 'bottom'
+              });
+              toast.present();
+            }
+          },
+          {
+            text: 'No'
+          }
+        ]
+      });
+      confirm.present();
+    } else {
+      this.isFollowing = true;
+      // TODO - persist data
+    }
+  }
+
   gameClicked($evt, game) {
     let sourceGame = this.tourneyData.games.find(g => g.id===game.gameId);
     console.log('sourceGame - ', sourceGame);
     this.navCtrl.parent.parent.push(GamePage, sourceGame);
+  }
+
+  getScoreWorL(game) {
+    return game.scoreDisplay ? game.scoreDisplay[0] : '';
+  }
+
+  getBadgeDisplayClass(game) {
+    return game.scoreDisplay.indexOf('W:') === 0 ? 'primary' : 'danger';
   }
 
   goHome() {
