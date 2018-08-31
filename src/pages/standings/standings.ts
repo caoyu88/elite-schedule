@@ -25,6 +25,8 @@ export class StandingsPage {
     let tourneyData = this.eliteApi.getCurrentTourney();
     this.standings = tourneyData.standings;
 
+    // this.allStandings = tourneyData.standings;
+
     this.allStandings =
           _.chain(this.standings)
             .groupBy('division')

@@ -11,6 +11,14 @@
       <button ion-item menuClose (click)="goHome()">Home</button>
       <button ion-item menuClose (click)="goTournaments()">Tournaments</button>
     </ion-list>
+
+    <ion-list >
+      <ion-list-header>Favorites</ion-list-header>
+      <ion-item menuClose *ngFor="let favor of favoriteTeams" (click)="gotoTeam(favor)" >
+        {{favor.team.name}}
+      </ion-item>
+    </ion-list>
+
   </ion-content>
 
 </ion-menu>

@@ -1,10 +1,14 @@
 import { Storage } from '@ionic/storage';
 import { Injectable } from '@angular/core';
+import { Events } from 'ionic-angular'
 
 @Injectable()
 export class UserSettingsProvider {
 
-  constructor(private storage: Storage) {
+  constructor(
+    private storage: Storage,
+    private events: Events
+  ) {
     console.log('Hello UserSettingsProvider Provider');
   }
 
@@ -16,10 +20,12 @@ export class UserSettingsProvider {
     };
 
     this.storage.set(team.id.toString(), JSON.stringify(item));
+    this.events.publish('favor:changed');
   }
 
   unfavoriteTeam(team) {
     this.storage.remove(team.id.toString());
+    this.events.publish('favor:changed');
   }
 
   isFavotiteTeam(teamId: string): Promise<boolean> {

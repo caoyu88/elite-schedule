@@ -1,5 +1,8 @@
+import { EliteApiProvider } from './../providers/elite-api/elite-api';
+import { TeamHomePage } from './../pages/team-home/team-home';
+import { UserSettingsProvider } from './../providers/user-settings/user-settings';
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, LoadingController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -16,9 +19,20 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
-    this.initializeApp();
+  favoriteTeams: any[];
 
+  constructor(
+    private events: Events,
+    public platform: Platform,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    private userSettingsProvider: UserSettingsProvider,
+    private loadingController: LoadingController,
+    private eliteApiProvider: EliteApiProvider
+  ) {
+    this.initializeApp();
+    this.refreshFavoriteTeams();
+    this.events.subscribe('favor:changed', () => this.refreshFavoriteTeams());
   }
 
   initializeApp() {
@@ -30,6 +44,15 @@ export class MyApp {
     });
   }
 
+  // this lifecycle event only for Pages - won't be triggered here
+  // ionViewDidEnter(){
+  //  this.refreshFavoriteTeams();
+  // }
+
+  refreshFavoriteTeams() {
+    this.favoriteTeams = this.userSettingsProvider.getAllFavorites();
+  }
+
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
@@ -38,6 +61,17 @@ export class MyApp {
 
   goHome() {
     this.nav.push(MyTeamsPage);
+  }
+
+  gotoTeam(t) {
+    let loader = this.loadingController.create({
+      content: 'Loading data ...',
+      dismissOnPageChange: true
+    });
+    loader.present();
+    this.eliteApiProvider.getTournamentData(t.tournamentId).subscribe(
+      item => this.nav.push(TeamHomePage, t.team)
+    )
   }
 
   goTournaments() {

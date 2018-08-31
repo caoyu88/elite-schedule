@@ -130,6 +130,13 @@ export class TeamDetailPage {
     return game.scoreDisplay.indexOf('W:') === 0 ? 'primary' : 'danger';
   }
 
+  refreshAll(refresher) {
+    this.eliteApi.refreshCurrentTourney().subscribe(() => {
+      refresher.complete();
+      this.ionViewDidLoad();
+    })
+  }
+
   goHome() {
     // this.navCtrl.popToRoot();
     console.log('parent - ', this.navCtrl.parent);

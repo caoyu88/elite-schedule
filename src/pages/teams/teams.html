@@ -4,6 +4,10 @@
     <ion-title>Teams</ion-title>
   </ion-navbar>
 
+  <ion-toolbar>
+    <ion-searchbar placeholder="find a team ..." [(ngModel)]="queryText" (ionInput)="updateTeams()"></ion-searchbar>
+  </ion-toolbar>
+
 </ion-header>
 
 
