@@ -4,6 +4,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { EliteApiProvider } from '../../providers/elite-api/elite-api';
 
+declare let window: any;
+
 @Component({
   selector: 'page-game',
   templateUrl: 'game.html',
@@ -40,7 +42,9 @@ export class GamePage {
   }
 
   goToDirection() {
-
+    let tourneyData = this.eliteApi.getCurrentTourney();
+    let location = tourneyData.locations[this.game.locationId];
+    window.location = `geo:${location.latitude},${location.longitude};u=35`;
   }
 
 }
