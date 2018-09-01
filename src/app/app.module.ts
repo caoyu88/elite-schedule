@@ -38,7 +38,7 @@ import { UserSettingsProvider } from '../providers/user-settings/user-settings';
     HttpModule,
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp),
-    AgmCoreModule.forRoot({ apiKey: 'AIzaSyDVxj2rJaZXoVGS7up24V5H51_mHkQucHE' })
+    AgmCoreModule.forRoot({ apiKey: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
