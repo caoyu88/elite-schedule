@@ -1,3 +1,4 @@
+import { MapPage } from './../map/map';
 import { TeamHomePage } from './../team-home/team-home';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
@@ -20,7 +21,7 @@ export class GamePage {
   }
 
   ionViewDidLoad() {
-
+    this.game.gameTime = Date.parse(this.game.time);
   }
 
   teamTapped(teamId) {
@@ -28,6 +29,18 @@ export class GamePage {
     console.log('tourneyData - ', tourneyData);
     let team = tourneyData.teams.find(t => t.id===teamId);
     this.navCtrl.push(TeamHomePage, team);
+  }
+
+  isWinner(s1, s2) {
+    return Number(s1) > Number(s2) ? 'primary' : 'danger';
+  }
+
+  goToMap() {
+    this.navCtrl.push(MapPage);
+  }
+
+  goToDirection() {
+
   }
 
 }

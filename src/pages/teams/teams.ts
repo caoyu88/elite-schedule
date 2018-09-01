@@ -15,7 +15,7 @@ export class TeamsPage {
   public teams = [];
   private allTeams: any;
   private allTeamDivisions: any;
-  private queryText: string;
+  public queryText: string;
 
   constructor(
     public navCtrl: NavController,
