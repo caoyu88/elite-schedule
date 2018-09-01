@@ -8,29 +8,27 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'map.html',
 })
 export class MapPage {
-  map: any;
+  public map: any;
 
   constructor(
     public navCtrl: NavController, 
     private eliteApiProvider: EliteApiProvider,
     public navParams: NavParams
   ) {
-  }
-
-  ionViewDidLoad() {
     let games = this.navParams.data;
     let tourneyData = this.eliteApiProvider.getCurrentTourney();
     let location = tourneyData.locations[games.locationId];
-
+    
     this.map = {
       lat: location.latitude,
-      lng: location.longtitude,
+      lng: location.longitude,
       zoom: 12,
       markerLabel: games.location
     };
+    console.log('map - ', this.map);
+  }
 
-    
-
+  ionViewDidLoad() {
   }
 
 }

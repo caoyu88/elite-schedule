@@ -35,8 +35,8 @@ export class GamePage {
     return Number(s1) > Number(s2) ? 'primary' : 'danger';
   }
 
-  goToMap() {
-    this.navCtrl.push(MapPage);
+  goToMap(g) {
+    this.navCtrl.push(MapPage, g);
   }
 
   goToDirection() {
